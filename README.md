@@ -2,7 +2,7 @@
 
 Model Check Monitor helps you choose an appropriate Codex model before a task and understand whether your Codex usage remains efficient over time.
 
-> **Status:** version 1.0.1 released. Codex is the primary target.
+> **Status:** version 1.0.3 released. Codex is the primary target.
 
 ## In plain language: choosing the right vehicle
 

@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [1.0.3] - 2026-08-05
+
 - Added a deterministic profile-action helper for manual model checks.
 - Prevented contradictory recommendations such as recommending another model
   while instructing the user to keep the current settings.
