@@ -1,0 +1,23 @@
+.DS_Store
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.env
+.env.*
+!.env.example
+*.log
+reports/
+local-test-data/
+*.zip
+
+# Extracted distribution copies are local review artifacts.
+model-check-monitor/
+
+# Never commit local Codex metadata.
+config.toml
+models_cache.json
+sessions/
+archived_sessions/

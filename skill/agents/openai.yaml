@@ -1,0 +1,4 @@
+interface:
+  display_name: "Model Check Monitor"
+  short_description: "Manual and weekly model-usage advice"
+  default_prompt: "Use $model-check-monitor to recommend the cheapest suitable model for this task, or set up a weekly read-only usage check."
