@@ -1,0 +1,36 @@
+name: Validate
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.10", "3.11", "3.12", "3.13", "3.14"]
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Compile scripts
+        run: python -m compileall -q skill/scripts
+
+      - name: Run tests
+        run: python -m unittest discover -s tests -v
+
+      - name: Check script help
+        run: |
+          python skill/scripts/model_catalog.py --help
+          python skill/scripts/codex_usage_summary.py --help
+          python skill/scripts/compare_session_profile.py --help

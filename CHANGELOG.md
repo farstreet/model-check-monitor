@@ -2,7 +2,12 @@
 
 ## [Unreleased]
 
-Work toward the first public release.
+Future changes.
+
+## [1.0.1] - 2026-08-05
+
+- Added a GitHub Actions validation workflow for supported Python versions.
+- Added public maintainer information to the README.
 
 ## [1.0.0] - 2026-08-05
 

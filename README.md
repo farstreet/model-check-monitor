@@ -42,3 +42,7 @@ The scripts use only the Python standard library. Tests, releases, and contribut
 ## License
 
 MIT. Third-party attribution is documented in [`skill/references/third-party.md`](skill/references/third-party.md).
+
+## About the author
+
+Model Check Monitor is maintained by [farstreet](https://github.com/farstreet).
