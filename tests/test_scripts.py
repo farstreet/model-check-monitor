@@ -81,6 +81,77 @@ class ScriptSmokeTests(unittest.TestCase):
             self.assertEqual(report["actual"]["models"], {"demo": 1})
             self.assertEqual(report["estimated_task_complexity"], "simple")
 
+    def test_profile_action_switches_when_models_differ(self):
+        output = self.run_script(
+            "profile_action.py",
+            "--recommended-model", "GPT-5.6-Sol",
+            "--recommended-reasoning", "low",
+            "--recommended-tier", "normal service",
+            "--current-model", "GPT-5.6-Luna",
+            "--current-reasoning", "low",
+            "--current-tier", "unknown",
+            "--format", "json",
+        )
+        report = json.loads(output)
+        self.assertEqual(report["decision"], "switch_profile")
+        self.assertEqual(report["action"], "switch to GPT-5.6-Sol · low · normal service")
+
+    def test_profile_action_keeps_matching_profile(self):
+        output = self.run_script(
+            "profile_action.py",
+            "--recommended-model", "GPT-5.6-Luna",
+            "--recommended-reasoning", "low",
+            "--recommended-tier", "normal",
+            "--current-model", "GPT-5.6-Luna",
+            "--current-reasoning", "low",
+            "--current-tier", "normal",
+            "--format", "json",
+        )
+        self.assertEqual(json.loads(output)["decision"], "keep_current")
+
+    def test_profile_action_changes_only_reasoning_when_model_matches(self):
+        output = self.run_script(
+            "profile_action.py",
+            "--recommended-model", "GPT-5.6-Luna",
+            "--recommended-reasoning", "medium",
+            "--recommended-tier", "normal",
+            "--current-model", "GPT-5.6-Luna",
+            "--current-reasoning", "low",
+            "--current-tier", "normal",
+            "--format", "json",
+        )
+        report = json.loads(output)
+        self.assertEqual(report["decision"], "change_reasoning")
+        self.assertEqual(report["action"], "change reasoning level to medium")
+
+    def test_profile_action_does_not_claim_full_match_when_tier_is_unknown(self):
+        output = self.run_script(
+            "profile_action.py",
+            "--recommended-model", "GPT-5.6-Luna",
+            "--recommended-reasoning", "low",
+            "--recommended-tier", "normal",
+            "--current-model", "GPT-5.6-Luna",
+            "--current-reasoning", "low",
+            "--current-tier", "unknown",
+            "--format", "json",
+        )
+        report = json.loads(output)
+        self.assertEqual(report["decision"], "keep_model_and_reasoning_tier_unknown")
+        self.assertIn("service tier is unknown", report["action"])
+
+    def test_profile_action_can_emit_dutch_action(self):
+        output = self.run_script(
+            "profile_action.py",
+            "--recommended-model", "GPT-5.6-Sol",
+            "--recommended-reasoning", "low",
+            "--recommended-tier", "normal",
+            "--current-model", "GPT-5.6-Luna",
+            "--current-reasoning", "low",
+            "--current-tier", "unknown",
+            "--language", "nl",
+        )
+        self.assertEqual(output.strip(), "schakel over naar GPT-5.6-Sol · low · normal")
+
 
 if __name__ == "__main__":
     unittest.main()

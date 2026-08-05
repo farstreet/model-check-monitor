@@ -33,7 +33,12 @@ python -m unittest discover -s tests -v
 python skill/scripts/model_catalog.py --help
 python skill/scripts/codex_usage_summary.py --help
 python skill/scripts/compare_session_profile.py --help
+python skill/scripts/profile_action.py --help
 ```
+
+`profile_action.py` is the manual-check consistency guard. It derives the only
+valid user-facing action from the recommended and current profiles; it does not
+change any Codex setting.
 
 ## Platform status
 

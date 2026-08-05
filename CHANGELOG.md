@@ -2,7 +2,10 @@
 
 ## [Unreleased]
 
-Future changes.
+- Added a deterministic profile-action helper for manual model checks.
+- Prevented contradictory recommendations such as recommending another model
+  while instructing the user to keep the current settings.
+- Added regression coverage for model, reasoning, and service-tier comparisons.
 
 ## [1.0.1] - 2026-08-05
 

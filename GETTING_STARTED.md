@@ -100,6 +100,20 @@ The seven lines answer seven practical questions:
 - **Confidence:** how clear the task-to-model match is;
 - **Recheck:** when a new assessment becomes useful.
 
+### How `Action` stays consistent
+
+The recommendation is advisory; it never changes your settings. To avoid a contradictory result, the skill first chooses one recommended profile and then derives **Action** only by comparing it with the current profile. A different model means “switch”; a matching model with different reasoning or service tier means change only that setting. When the service tier is unavailable, the output can confirm only the model and reasoning level, not the full profile.
+
+For example, this combination is invalid and is now blocked by the skill's consistency check:
+
+```text
+Recommended: GPT-5.6-Sol · low · normal service
+Current: GPT-5.6-Luna · low · service tier unknown
+Action: keep current settings
+```
+
+Its required action is to switch to GPT-5.6-Sol.
+
 ### Example 1: simple task — suitable model choice
 
 Task:
@@ -113,7 +127,7 @@ The check is run with **GPT-5.4-Mini · low · normal service**. The task is sma
 ```text
 Recommended: GPT-5.4-Mini · low · normal service
 Current: GPT-5.4-Mini · low · normal service
-Action: keep current model and reasoning level
+Action: keep current settings
 Why: one small local edit with no coupled dependencies
 Impact: illustrative 3,000 tokens for one short pass; exact credits are unavailable
 Confidence: high
@@ -133,7 +147,7 @@ The task is run with **GPT-5.6-Sol · high**. The answer may be correct, but thi
 ```text
 Recommended: GPT-5.4-Mini · low · normal service
 Current: GPT-5.6-Sol · high · normal service
-Action: switch to the recommended model
+Action: switch to GPT-5.4-Mini · low · normal service
 Why: a short summary does not require this model or reasoning level
 Impact: illustrative 12,000 tokens now versus 3,000 tokens for the smaller configuration; exact credits are unavailable
 Confidence: high
@@ -153,7 +167,7 @@ The task is run with **GPT-5.4-Mini · low**. Several systems are coupled, so th
 ```text
 Recommended: GPT-5.5 · high · normal service
 Current: GPT-5.4-Mini · low · normal service
-Action: switch to the recommended model
+Action: switch to GPT-5.5 · high · normal service
 Why: diagnosis spans authentication, networking, and migration dependencies
 Impact: illustrative 42,000 tokens after retries now versus 35,000 tokens for one deeper investigation; exact credits are unavailable
 Confidence: high
@@ -173,7 +187,7 @@ The task is run with **GPT-5.6-Terra · medium**. It spans multiple files and ne
 ```text
 Recommended: GPT-5.6-Terra · medium · normal service
 Current: GPT-5.6-Terra · medium · normal service
-Action: keep current model and reasoning level
+Action: keep current settings
 Why: multiple-file implementation with routine validation
 Impact: illustrative 18,000 tokens for one implementation and test pass; exact credits are unavailable
 Confidence: medium

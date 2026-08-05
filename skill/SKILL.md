@@ -23,13 +23,28 @@ Assess only the current task. Do not solve it.
 - Recommend a model with high reasoning for difficult diagnosis, architecture, coupled systems, security-critical work, or a demonstrably failed lower-reasoning attempt.
 - Recommend xhigh, Max, Ultra, or Priority only for an explicit exceptional need. Normal service is the default.
 - Recommend a fresh task when old context is mostly unrelated or repeated compaction is visible.
+- Use this fixed sequence: classify the task; choose exactly one recommended profile; read the current profile; derive `Action`; then check the three fields for consistency.
+- `Action` is not a second recommendation. Derive it only with `scripts/profile_action.py`, using the model display name, reasoning level, and service tier shown in `Recommended` and `Current`.
+- If the recommended model differs from the current model, `Action` must be the helper's switch action. It must never say to keep the current settings.
+- If the model matches but reasoning or a known service tier differs, use only the helper's corresponding setting-change action.
+- When the current service tier is unknown, do not claim the full profile matches; retain only the helper's explicit unknown-tier action.
+- Copy the helper's `Action` output verbatim. Run it with `--language nl` for Dutch; use `--language en` otherwise.
 
-Return exactly seven short lines in the user's language. Include the actual current model, reasoning level, and service tier if known, and use the catalog display name for the recommendation. Make the action directly usable. Explain the task-specific reason, the likely usage impact without inventing prices, confidence in the assessment, and when a recheck is useful. If measured token evidence is available, include it in the impact line; otherwise label any number as illustrative:
+Return exactly seven short lines in the user's language. Include the actual current model, reasoning level, and service tier if known, and use the catalog display name for the recommendation. Derive `Action` after the other two profile lines using this local command (substitute the exact values; pass `unknown` for an absent field):
+
+```sh
+python3 <skill-directory>/scripts/profile_action.py \
+  --recommended-model "GPT-5.6-Luna" --recommended-reasoning low --recommended-tier normal \
+  --current-model "GPT-5.6-Luna" --current-reasoning low --current-tier unknown \
+  --language en
+```
+
+Copy its result verbatim after `Action:`. Before sending, verify that a model mismatch does not have a keep action. Explain the task-specific reason, the likely usage impact without inventing prices, confidence in the assessment, and when a recheck is useful. If measured token evidence is available, include it in the impact line; otherwise label any number as illustrative:
 
 ```text
 Recommended: GPT-5.4-Mini · low · normal service
 Current: GPT-5.5 · high · normal service
-Action: switch to the recommended model
+Action: switch to GPT-5.4-Mini · low · normal service
 Why: the task is a small local edit with no coupled dependencies
 Impact: illustrative 3,000 tokens for this small task; exact credits are unavailable
 Confidence: high

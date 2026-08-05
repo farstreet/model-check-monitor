@@ -17,6 +17,7 @@ The scripts currently use only the standard library, so no dependency installati
 
 - Run the compile and `--help` checks from the README.
 - Test missing, malformed and empty metadata inputs.
+- Test every model-profile action branch, especially model mismatches and unknown service tiers.
 - Check that prompts, responses, secrets and auth data are not written to output.
 - Update the README, changelog or privacy documentation when behavior changes.
 - Use a focused commit and explain any compatibility change.
